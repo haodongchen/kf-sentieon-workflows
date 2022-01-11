@@ -1,8 +1,22 @@
 cwlVersion: v1.2
 class: CommandLineTool
 label: Sentieon_DNAscope_LongRead
-$namespaces:
-  sbg: https://sevenbridges.com
+doc: |-
+  This tool uses **Sentieon DNAscope** to call germline variants from PacBio HiFi reads [1].
+  
+  ### Input data requirements
+  
+  - **Aligned reads**: The pipeline will take PacBio® HiFi reads that have been aligned to a reference genome with `pbmm2` or `minimap2`.
+  - **The Reference genome**: A reference genome file in FASTA format with its index file (.fai). 
+
+  ### Common Issues and Important Notes
+  
+  * By suppling an optional MHC BED file, additional special handling can be applied to the MHC region to further increase variant calling accuracy.
+  * Currently, the pipeline is only recommended for use with samples from diploid organisms. For samples with both diploid and haploid chromosomes, the `-b INTERVAL` option can be used to limit variant calling to diploid chromosomes.
+  
+  ###References
+  
+  [1] [https://support.sentieon.com/appnotes/dnascope_hifi/](https://support.sentieon.com/appnotes/dnascope_hifi/)
 
 requirements:
 - class: ShellCommandRequirement
