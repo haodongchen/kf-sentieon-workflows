@@ -6,7 +6,7 @@ doc: |-
 
   ### Input data requirements
 
-  - **Aligned reads**: The pipeline will take PacBioÂ® HiFi reads that have been aligned to a reference genome with `pbmm2` or `minimap2`.
+  - **Aligned reads**: The pipeline will take PacBio HiFi reads that have been aligned to a reference genome with `pbmm2` or `minimap2`.
   - **The Reference genome**: A reference genome file in FASTA format with its index file (.fai). 
 
   ### Common Issues and Important Notes
