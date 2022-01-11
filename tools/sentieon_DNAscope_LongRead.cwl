@@ -35,7 +35,7 @@ requirements:
     envValue: $(inputs.sentieon_license)
 - class: InlineJavascriptRequirement
 - class: DockerRequirement
-  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202010.04_hifi
+  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202112_hifi
 
 inputs:
 - id: sentieon_license
