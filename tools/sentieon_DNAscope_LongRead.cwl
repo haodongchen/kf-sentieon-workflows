@@ -3,19 +3,19 @@ class: CommandLineTool
 label: Sentieon_DNAscope_LongRead
 doc: |-
   This tool uses **Sentieon DNAscope** to call germline variants from PacBio HiFi reads [1].
-  
+
   ### Input data requirements
-  
-  - **Aligned reads**: The pipeline will take PacBio® HiFi reads that have been aligned to a reference genome with `pbmm2` or `minimap2`.
+
+  - **Aligned reads**: The pipeline will take PacBioÂ® HiFi reads that have been aligned to a reference genome with `pbmm2` or `minimap2`.
   - **The Reference genome**: A reference genome file in FASTA format with its index file (.fai). 
 
   ### Common Issues and Important Notes
-  
+
   * By suppling an optional MHC BED file, additional special handling can be applied to the MHC region to further increase variant calling accuracy.
   * Currently, the pipeline is only recommended for use with samples from diploid organisms. For samples with both diploid and haploid chromosomes, the `-b INTERVAL` option can be used to limit variant calling to diploid chromosomes.
-  
+
   ###References
-  
+
   [1] [https://support.sentieon.com/appnotes/dnascope_hifi/](https://support.sentieon.com/appnotes/dnascope_hifi/)
 
 requirements:
@@ -43,13 +43,13 @@ requirements:
             return 71000
         }
     }
+- class: DockerRequirement
+  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202112_hifi
 - class: EnvVarRequirement
   envDef:
   - envName: SENTIEON_LICENSE
     envValue: $(inputs.sentieon_license)
 - class: InlineJavascriptRequirement
-- class: DockerRequirement
-  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202112_hifi
 
 inputs:
 - id: sentieon_license
@@ -126,22 +126,13 @@ inputs:
     position: 60
     shellQuote: false
   sbg:fileTypes: BED
-- id: output_phased_regions
-  label: Output phased regions
-  doc: |-
-    Output the BED file of phased regions (off by default)
-  type: boolean?
-  inputBinding:
-    prefix: -p
-    position: 70
-    shellQuote: false
 - id: cpu_per_job
   label: CPU per job
   doc: CPU per job
   type: int?
 - id: mem_per_job
   label: Memory per job
-  doc: Memory per job[MB].
+  doc: Memory per job[MB]
   type: int?
 
 outputs:
@@ -152,7 +143,6 @@ outputs:
     required: true
   outputBinding:
     glob: '*.vcf.gz'
-    outputEval: $(inheritMetadata(self, inputs.input))
   sbg:fileTypes: VCF.GZ
 
 baseCommand:
@@ -170,7 +160,7 @@ arguments:
         if (inputs.output_file_name)
             return inputs.output_file_name
         else
-            var basename = inputs.input.nameroot.split("/").pop()
+            var basename = inputs.input_bam.nameroot
             return basename.concat(".vcf.gz")
     }
   shellQuote: false
