@@ -8,7 +8,7 @@ doc: |-
   - ``Reference``: Location of the reference FASTA file (Required)
   - ``Input alignments``: An array of sorted file (Required)
   
-  * Outputs are named based on the **Output file name prefix** input parameter. If a value for it is not provided, the base name of the provided **Input alignments** inputs is used to name the outputs.
+  * Outputs are named based on the **prefix** input parameter. If a value for it is not provided, the base name of the provided **Input alignments** inputs is used to name the outputs.
   * The **Output format** input parameter was added to allow the users to select the format of the created output file.
    
   ### Common Issues and Important Notes
