@@ -14,9 +14,6 @@ doc: |-
   ### Common Issues and Important Notes
   * The default value of **Optical duplicate pixel distance** input parameter (100) is appropriate for unpatterned Illumina platforms; however, for patterned flowcell models 2500 is more appropriate [1].
 
-$namespaces:
-  sbg: https://sevenbridges.com
-
 requirements:
 - class: ShellCommandRequirement
 - class: ResourceRequirement
@@ -81,7 +78,7 @@ inputs:
 - id: output_type
   label: Output format
   doc: |-
-    Since Picard tools can output both SAM and BAM files, the users can choose the format of the output file.
+    Since Sentieon tools can output both SAM and BAM files, the users can choose the format of the output file.
   type:
   - 'null'
   - name: output_type
