@@ -78,7 +78,7 @@ inputs:
 - id: output_type
   label: Output format
   doc: |-
-    Since Sentieon tools can output both SAM and BAM files, the users can choose the format of the output file.
+    Since Sentieon tools can output both BAM and CRAM files, the users can choose the format of the output file.
   type:
   - 'null'
   - name: output_type
