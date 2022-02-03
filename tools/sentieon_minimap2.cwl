@@ -275,6 +275,10 @@ arguments:
     \ }\n}"
   shellQuote: false
 - prefix: ''
+  position: 1
+  valueFrom: $("-t $(nproc)")
+  shellQuote: false
+- prefix: ''
   position: 101
   valueFrom: |-
     ${
