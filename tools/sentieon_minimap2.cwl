@@ -35,7 +35,7 @@ requirements:
         }
     }
 - class: DockerRequirement
-  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202112_hifi
+  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202112.01_hifi
 - class: EnvVarRequirement
   envDef:
   - envName: SENTIEON_LICENSE
@@ -148,6 +148,18 @@ inputs:
     shellQuote: false
   sbg:category: Alignment options
   sbg:toolDefaultValue: 2,1
+- id: zdrop
+  label: Z Drop
+  doc: |-
+    Truncate an alignment if the running alignment score drops too quickly along the diagonal of the DP matrix (diagonal X-drop, or Z-drop) [400,200].
+  type: int[]?
+  inputBinding:
+    prefix: -z
+    position: 1
+    itemSeparator: ','
+    shellQuote: false
+  sbg:category: Alignment options
+  sbg:toolDefaultValue: 400,200
 - id: min_dp_score
   label: Minimal peak DP alignment score
   doc: |-
@@ -169,6 +181,15 @@ inputs:
     position: 1
     shellQuote: false
   sbg:category: Input/output options
+- id: copy_comments
+  label: Copy comments
+  doc: Copy input FASTA/Q comments.
+  type: boolean?
+  inputBinding:
+    prefix: -y
+    position: 1
+    shellQuote: false
+  sbg:toolDefaultValue: Input/output options
 - id: read_group_line
   label: Read group line
   doc: SAM read group line in a format like '@RG\tID:foo\tSM:bar\tPL:PacBio'
