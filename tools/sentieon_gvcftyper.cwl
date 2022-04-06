@@ -3,14 +3,14 @@ class: CommandLineTool
 label: Sentieon_GVCFtyper
 doc: |-
   The Sentieon **GVCFtyper** binary performs joint genotyping using One or more GVCFs.
-  
+
   ### Inputs:
   - ``Reference``: Location of the reference FASTA file (Required)
   - ``Inputs``: GVCFs (Required)
 
   ### Notes:
   * Set `--genotype_model=coalescent --emit_conf=10 --call_conf=10` to match GATK 3.7, 3.8, 4.0.
-  * Set `--genotype_model=multinomial --emit_conf=30 --call_conf=30` to match GATK 4.1.
+  * Set `--genotype_model=multinomial --emit_conf=30 --call_conf=30` to match GATK 4.1. (default)
 
 requirements:
 - class: ShellCommandRequirement
@@ -54,29 +54,40 @@ inputs:
   label: Reference
   doc: Reference fasta file with associated indexes
   type: File
-  inputBinding:
-    prefix: -r
-    position: 1
   secondaryFiles:
   - pattern: .fai
     required: true
   - pattern: ^.dict
     required: true
+  inputBinding:
+    prefix: -r
+    position: 1
+    shellQuote: true
   sbg:fileTypes: FA, FASTA
+- id: advanced_driver_options
+  label: Advanced driver options
+  doc: |-
+    The options for driver call, e.g., --interval_padding, --read_filter, --shard, --passthru.
+  type: string?
+  inputBinding:
+    position: 6
+    shellQuote: false
 - id: input_vcfs
   label: Input GVCFs
-  type: 
-  - type: array
-    items: File
+  type:
+    type: array
     inputBinding:
-      separate: true
+      position: 0
+      shellQuote: true
+    items: File
   secondaryFiles:
-    - pattern: .tbi
-      required: false
-    - pattern: .idx
-      required: false
+  - pattern: .tbi
+    required: false
+  - pattern: .idx
+    required: false
   inputBinding:
     position: 110
+    shellQuote: true
   sbg:fileTypes: VCF, VCF.GZ, GVCF, GVCF.GZ
 - id: dbSNP
   label: dbSNP VCF file
@@ -91,10 +102,10 @@ inputs:
   inputBinding:
     prefix: -d
     position: 11
+    shellQuote: true
 - id: emit_mode
   label: Emit mode
-  doc: |-
-    Emit mode: variant, confident or all (default: variant)
+  doc: 'Emit mode: variant, confident or all (default: variant)'
   type:
   - 'null'
   - name: emit_mode
@@ -106,24 +117,25 @@ inputs:
   inputBinding:
     prefix: --emit_mode
     position: 11
-  sbg:toolDefaultValue: 'variant'
+    shellQuote: true
+  sbg:toolDefaultValue: variant
 - id: call_conf
   label: Call confidence level
-  doc: |-
-    Call confidence level (default: 30)
+  doc: 'Call confidence level (default: 30)'
   type: int?
   inputBinding:
     prefix: --call_conf
     position: 11
+    shellQuote: true
   sbg:toolDefaultValue: '30'
 - id: emit_conf
   label: Emit confidence level
-  doc: |-
-    Emit confidence level (default: 30)
+  doc: 'Emit confidence level (default: 30)'
   type: int?
   inputBinding:
     prefix: --emit_conf
     position: 11
+    shellQuote: true
   sbg:toolDefaultValue: '30'
 - id: genotype_model
   label: Genotype model
@@ -137,20 +149,28 @@ inputs:
     symbols:
     - coalescent
     - multinomial
+  default: multinomial
   inputBinding:
     prefix: --genotype_model
     position: 11
-  default: multinomial
-  sbg:toolDefaultValue: 'multinomial'
+    shellQuote: true
+  sbg:toolDefaultValue: multinomial
 - id: max_alt_alleles
   label: Maximum alt alleles
-  doc: |-
-    Maximum number of alternate alleles (default: 100)
+  doc: 'Maximum number of alternate alleles (default: 100)'
   type: int?
   inputBinding:
     prefix: --max_alt_alleles
     position: 11
+    shellQuote: true
   sbg:toolDefaultValue: '100'
+- id: advanced_algo_options
+  label: Advanced algo options
+  doc: The options for --algo GVCFtyper.
+  type: string[]?
+  inputBinding:
+    position: 12
+    shellQuote: true
 - id: output_file_name
   label: Output file name
   doc: The output VCF file name. Must end with ".vcf.gz".
@@ -177,11 +197,10 @@ outputs:
 baseCommand:
 - sentieon
 - driver
-
 arguments:
 - prefix: ''
   position: 10
-  valueFrom: "--algo GVCFtyper"
+  valueFrom: --algo GVCFtyper
   shellQuote: false
 - prefix: ''
   position: 100
