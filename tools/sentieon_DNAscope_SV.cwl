@@ -107,10 +107,15 @@ inputs:
     position: 2
     shellQuote: false
 - id: dbSNP
-  label: dbSNP file
+  label: dbSNP VCF file
   doc: |-
-    The location of dbSNP file
+    Supplying this file will annotate variants with their dbSNP refSNP ID numbers. (optional)
   type: File?
+  secondaryFiles:
+  - pattern: .tbi
+    required: false
+  - pattern: .idx
+    required: false
   inputBinding:
     prefix: -d
     position: 12
