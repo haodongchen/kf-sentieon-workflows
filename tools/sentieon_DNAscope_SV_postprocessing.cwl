@@ -57,7 +57,7 @@ inputs:
 - id: output_file_name
   label: Output file name
   doc: The output VCF file name. Must end with ".vcf.gz".
-  type: string?
+  type: string
 
 outputs:
 - id: output_vcf
