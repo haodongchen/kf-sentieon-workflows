@@ -43,7 +43,7 @@ requirements:
         }
         else
         {
-            return 32
+            return 8
         }
     }
   ramMin: |-
@@ -54,7 +54,7 @@ requirements:
         }
         else
         {
-            return 32000
+            return 8000
         }
     }
 - class: DockerRequirement
