@@ -119,7 +119,7 @@ inputs:
 - id: base_out
   label: Base VCF OUT
   doc: Annotated baseline vcf file. Must end with ".vcf.gz".
-  type: string
+  type: string?
   inputBinding:
     prefix: --base_out
     position: 10
@@ -127,7 +127,7 @@ inputs:
 - id: comp_out
   label: Comp VCF OUT
   doc: Annotated comparison vcf file. Must end with ".vcf.gz".
-  type: string
+  type: string?
   inputBinding:
     prefix: --comp_out
     position: 10
