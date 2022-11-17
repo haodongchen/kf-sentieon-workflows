@@ -172,6 +172,9 @@ inputs:
     position: 20
     shellQuote: false  
   default: Levenshtein
+- id: out_table_name
+  label: Output name
+  type: string
 - id: cpu_per_job
   label: CPU per job
   doc: CPU per job
@@ -183,9 +186,10 @@ inputs:
   
 outputs:
 - id: result
-  type: stdout
-- id: error
-  type: stderr
+  type: File
+  outputBinding:
+      glob: output.txt
+      outputEval: ${self[0].basename=inputs.out_table_name; return self;}
 - id: annotated_vcfs
   type: File
   outputBinding:
