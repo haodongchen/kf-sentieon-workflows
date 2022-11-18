@@ -61,8 +61,17 @@ requirements:
   dockerPull: pgc-images.sbgenomics.com/hdchen/hap-eval:latest
 - class: InlineJavascriptRequirement
 
-stdout: output.txt
-stderr: error.txt
+stdout: |-
+    ${
+        if (inputs.out_table_name)
+        {
+            return inputs.out_table_name
+        }
+        else
+        {
+            return "output.txt"
+        }
+    }
 
 inputs:
 - id: reference
@@ -174,7 +183,7 @@ inputs:
   default: Levenshtein
 - id: out_table_name
   label: Output name
-  type: string
+  type: string?
 - id: cpu_per_job
   label: CPU per job
   doc: CPU per job
@@ -186,10 +195,7 @@ inputs:
   
 outputs:
 - id: result
-  type: File
-  outputBinding:
-      glob: output.txt
-      outputEval: ${self[0].basename=inputs.out_table_name; return self;}
+  type: stdout
 - id: annotated_vcfs
   type: File
   outputBinding:
