@@ -19,7 +19,7 @@ RUN mkdir -p /opt/sentieon/ && \
     wget -nv -O - "https://s3.amazonaws.com/sentieon-release/software/sentieon-genomics-202112.06.tar.gz" | \
       tar -zxf - -C /opt/sentieon/
 RUN mkdir -p /opt/dnascope_hifi/ && \
-    wget -nv -O - "https://s3.amazonaws.com/sentieon-release/other/DNAscopeHiFiBeta0.4.pipeline.tar.gz" | \
+    wget -nv -O - "https://s3.amazonaws.com/sentieon-release/other/DNAscopeHiFiBeta0.5.pipeline.tar.gz" | \
       tar -zxf - -C /opt/dnascope_hifi/
 RUN mkdir -p /opt/dnascope_models/ && \
     wget -nv -O /opt/dnascope_models/SentieonDNAscopeModel1.1.model https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModel1.1.model && \
