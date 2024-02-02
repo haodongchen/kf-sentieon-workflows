@@ -120,7 +120,7 @@ outputs:
 - id: out_alignments
   label: Deduped alignments file
   doc: The output file to which marked records will be written.
-  type: File?
+  type: File
   secondaryFiles:
   - pattern: .bai
     required: true
