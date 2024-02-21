@@ -41,7 +41,7 @@ requirements:
         }
     }
 - class: DockerRequirement
-  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202308.01
+  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202308.02
 - class: EnvVarRequirement
   envDef:
   - envName: SENTIEON_LICENSE
@@ -65,7 +65,7 @@ inputs:
   inputBinding:
     prefix: -r
     position: 0
-    shellQuote: false
+    shellQuote: true
   sbg:fileTypes: FA, FASTA
 - id: input_bam
   label: Input BAM
@@ -83,7 +83,7 @@ inputs:
   inputBinding:
     prefix: -i
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:fileTypes: BAM, CRAM
 - id: interval
   label: Interval
@@ -93,7 +93,7 @@ inputs:
   inputBinding:
     prefix: --interval
     position: 5
-    shellQuote: false
+    shellQuote: true
   sbg:fileTypes: BED, VCF, interval_list
 - id: dbSNP
   label: dbSNP VCF file
@@ -108,7 +108,7 @@ inputs:
   inputBinding:
     prefix: -d
     position: 12
-    shellQuote: false
+    shellQuote: true
 - id: model_bundle
   label: DNAscope ML Model
   doc: |-
@@ -158,7 +158,7 @@ arguments:
 - prefix: '--algo'
   position: 10
   valueFrom: DNAscope
-  shellQuote: false
+  shellQuote: true
 - prefix: ''
   position: 15
   valueFrom:  |-
@@ -176,11 +176,7 @@ arguments:
         else
             return "conservative"
     }
-  shellQuote: false
-#- prefix: ''
-#  position: 20
-#  valueFrom: tmp.variant.vcf.gz
-#  shellQuote: false
+  shellQuote: true
 - prefix: ''
   position: 50
   valueFrom: |-

@@ -9,6 +9,9 @@ doc: |-
   - ``Input reads``: Files containing reads (Required)
 
   
+$namespaces:
+  sbg: https://sevenbridges.com
+
 requirements:
 - class: ShellCommandRequirement
 - class: ResourceRequirement
@@ -35,7 +38,7 @@ requirements:
         }
     }
 - class: DockerRequirement
-  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202112.06
+  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202308.02
 - class: EnvVarRequirement
   envDef:
   - envName: SENTIEON_LICENSE
@@ -54,7 +57,7 @@ inputs:
   type: File
   inputBinding:
     position: 98
-    shellQuote: false
+    shellQuote: true
   sbg:fileTypes: FA, MMI, FASTA
 - id: in_reads
   label: Input reads
@@ -62,7 +65,7 @@ inputs:
   type: File[]
   inputBinding:
     position: 99
-    shellQuote: false
+    shellQuote: true
   sbg:fileTypes: FQ, FASTQ, FQ.GZ, FASTQ.GZ
 - id: output_name
   label: Output file name
@@ -105,7 +108,18 @@ inputs:
   inputBinding:
     prefix: -x
     position: 0
-    shellQuote: false
+    shellQuote: true
+- id: model_bundle
+  label: Model bundle
+  doc: |-
+    Sentieon model for long reads
+  type: File?
+  inputBinding:
+    prefix: -x
+    position: 0
+    shellQuote: true
+    valueFrom: |-
+      $(self.path)/minimap2.model
 - id: matching_score
   label: Matching score
   doc: Matching score. Default is 2.
@@ -113,7 +127,7 @@ inputs:
   inputBinding:
     prefix: -A
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:category: Alignment options
   sbg:toolDefaultValue: '2'
 - id: mismatch_penalty
@@ -123,7 +137,7 @@ inputs:
   inputBinding:
     prefix: -B
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:category: Alignment options
   sbg:toolDefaultValue: '4'
 - id: gap_open_penalty
@@ -134,7 +148,7 @@ inputs:
     prefix: -O
     position: 1
     itemSeparator: ','
-    shellQuote: false
+    shellQuote: true
   sbg:toolDefaultValue: 4,24
 - id: gap_extension_penalty
   label: Gap extension penalty
@@ -145,7 +159,7 @@ inputs:
     prefix: -E
     position: 1
     itemSeparator: ','
-    shellQuote: false
+    shellQuote: true
   sbg:category: Alignment options
   sbg:toolDefaultValue: 2,1
 - id: zdrop
@@ -157,7 +171,7 @@ inputs:
     prefix: -z
     position: 1
     itemSeparator: ','
-    shellQuote: false
+    shellQuote: true
   sbg:category: Alignment options
   sbg:toolDefaultValue: 400,200
 - id: min_dp_score
@@ -168,7 +182,7 @@ inputs:
   inputBinding:
     prefix: -s
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:category: Alignment options
   sbg:toolDefaultValue: '40'
 - id: write_cigar
@@ -179,7 +193,7 @@ inputs:
   inputBinding:
     prefix: -L
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:category: Input/output options
 - id: copy_comments
   label: Copy comments
@@ -188,7 +202,7 @@ inputs:
   inputBinding:
     prefix: -y
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:toolDefaultValue: Input/output options
 - id: read_group_line
   label: Read group line
@@ -197,7 +211,7 @@ inputs:
   inputBinding:
     prefix: -R
     position: 1
-    shellQuote: false
+    shellQuote: true
 - id: create_cigar
   label: Generate cigar
   doc: Generate CIGAR. In PAF, the CIGAR is written to the 'cg' custom tag.
@@ -205,7 +219,7 @@ inputs:
   inputBinding:
     prefix: -c
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:category: Input/output options
 - id: ouput_cs_tag
   label: Output cs tag
@@ -222,7 +236,7 @@ inputs:
     prefix: -cs=
     position: 1
     separate: false
-    shellQuote: false
+    shellQuote: true
 - id: md_tag
   label: Output MD tag
   doc: Output the MD tag (see the SAM spec).
@@ -230,7 +244,7 @@ inputs:
   inputBinding:
     prefix: --MD
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:toolDefaultValue: Input/output options
 - id: eqx
   label: Output CIGAR operators
@@ -239,7 +253,7 @@ inputs:
   inputBinding:
     prefix: --eqx
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:category: Input/output options
 - id: soft_clipping
   label: Soft clipping in SAM
@@ -248,7 +262,7 @@ inputs:
   inputBinding:
     prefix: -Y
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:category: Input/output options
 - id: minibatch_size
   label: Minibatch size
@@ -258,7 +272,7 @@ inputs:
   inputBinding:
     prefix: -K
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:toolDefaultValue: '500M'
 - id: additional_inputs
   label: Additional arguments
@@ -281,9 +295,12 @@ outputs:
 - id: out_alignments
   label: Out alignments
   doc: Output alignment file in PAF or BAM format.
-  type: File?
+  type: File
   outputBinding:
-    glob: '{*.paf,*.bam,*.bai}'
+    glob: '{*.paf,*.bam}'
+  secondaryFiles:
+    - pattern: .bai
+      required: false
   sbg:fileTypes: PAF, BAM
 
 baseCommand:

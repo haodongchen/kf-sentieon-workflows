@@ -35,5 +35,5 @@ outputs:
     label: DNAscope Model bundle
     type: File
     outputBinding:
-      glob: 'DNAscope.bundle'
+      glob: '*.bundle'
 

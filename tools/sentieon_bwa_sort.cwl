@@ -38,7 +38,7 @@ requirements:
         }
     }
 - class: DockerRequirement
-  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202308.01
+  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202308.02
 - class: EnvVarRequirement
   envDef:
   - envName: SENTIEON_LICENSE
@@ -94,12 +94,11 @@ inputs:
   doc: BWA model file
   type: File?
   inputBinding:
-      shellQuote: false
+      prefix: -x
+      shellQuote: true
       position: 5
       valueFrom: |-
-        ${
-            return "-x " + self.path + "/bwa.model"
-        }
+        $(self.path)/bwa.model
 - id: interleaved
   label: Interleaved
   doc: The reads input is interleaved.

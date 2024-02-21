@@ -8,7 +8,10 @@ doc: |-
   #### Required
   - ``Reference``: Location of the reference FASTA file.
   - ``Input BAM``: Location of the BAM/CRAM input file.
-  - ``Platform``: PacBio HiFi or Oxford Nanopore
+  - ``Model``: LongReadSV Model bundle
+
+$namespaces:
+  sbg: https://sevenbridges.com
 
 requirements:
 - class: ShellCommandRequirement
@@ -36,7 +39,7 @@ requirements:
         }
     }
 - class: DockerRequirement
-  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202112.06
+  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202308.02
 - class: EnvVarRequirement
   envDef:
   - envName: SENTIEON_LICENSE
@@ -56,11 +59,11 @@ inputs:
   - pattern: .fai
     required: true
   - pattern: ^.dict
-    required: true
+    required: false
   inputBinding:
     prefix: -r
     position: 0
-    shellQuote: false
+    shellQuote: true
   sbg:fileTypes: FA, FASTA
 - id: input_bam
   label: Input BAM
@@ -78,35 +81,16 @@ inputs:
   inputBinding:
     prefix: -i
     position: 1
-    shellQuote: false
+    shellQuote: true
   sbg:fileTypes: BAM, CRAM
-- id: platform
-  label: Sequencing platform
-  doc: |-
-    PacBio HiFi or Oxford Nanopore (ONT)
-  type:
-  - 'null'
-  - name: platform
-    type: enum
-    symbols:
-    - PacBioHiFi
-    - ONT
-  default: PacBioHiFi
+- id: model_bundle
+  label: Model bundle
+  type: File
   inputBinding:
     prefix: --model
     position: 11
-    shellQuote: true
     valueFrom: |-
-      ${
-          if (self === "PacBioHiFi") {
-              return "/opt/dnascope_models/SentieonLongReadSVHiFiBeta0.1.model";
-          }
-          else if (self === "ONT") {
-              return "/opt/dnascope_models/SentieonLongReadSVONTBeta0.1.model";
-          }
-          return ""
-       }
-  sbg:toolDefaultValue: PacBioHiFi
+      $(self.path)/longreadsv.model
 - id: min_sv_size
   label: MIN_SV_SIZE
   doc:  minimum SV size in basepairs to output
@@ -125,6 +109,24 @@ inputs:
     shellQuote: true
     position: 12
   sbg:toolDefaultValue: 20
+- id: min_dp
+  label: MIN_DP
+  doc:  Minimum depth
+  type: int?
+  inputBinding:
+    prefix: --min_dp
+    shellQuote: true
+    position: 12
+  sbg:toolDefaultValue: 2
+- id: min_af
+  label: MIN_AF
+  doc:  Minimum af
+  type: float?
+  inputBinding:
+    prefix: --min_af
+    shellQuote: true
+    position: 12
+  sbg:toolDefaultValue: 0.15
 - id: output_file_name
   label: Output file name
   doc: The output VCF file name. Must end with ".vcf.gz".
@@ -158,4 +160,4 @@ arguments:
 - prefix: '--algo'
   position: 10
   valueFrom: LongReadSV
-  shellQuote: false
+  shellQuote: true
