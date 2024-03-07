@@ -128,7 +128,6 @@ inputs:
     prefix: -A
     position: 1
     shellQuote: true
-  sbg:category: Alignment options
   sbg:toolDefaultValue: '2'
 - id: mismatch_penalty
   label: Mismatch penalty
@@ -138,7 +137,6 @@ inputs:
     prefix: -B
     position: 1
     shellQuote: true
-  sbg:category: Alignment options
   sbg:toolDefaultValue: '4'
 - id: gap_open_penalty
   label: Gap open penalty
@@ -160,7 +158,6 @@ inputs:
     position: 1
     itemSeparator: ','
     shellQuote: true
-  sbg:category: Alignment options
   sbg:toolDefaultValue: 2,1
 - id: zdrop
   label: Z Drop
@@ -172,7 +169,6 @@ inputs:
     position: 1
     itemSeparator: ','
     shellQuote: true
-  sbg:category: Alignment options
   sbg:toolDefaultValue: 400,200
 - id: min_dp_score
   label: Minimal peak DP alignment score
@@ -183,7 +179,6 @@ inputs:
     prefix: -s
     position: 1
     shellQuote: true
-  sbg:category: Alignment options
   sbg:toolDefaultValue: '40'
 - id: write_cigar
   label: Write CIGAR to cg tag
@@ -194,7 +189,7 @@ inputs:
     prefix: -L
     position: 1
     shellQuote: true
-  sbg:category: Input/output options
+  sbg:toolDefaultValue: 'false'
 - id: copy_comments
   label: Copy comments
   doc: Copy input FASTA/Q comments.
@@ -203,7 +198,7 @@ inputs:
     prefix: -y
     position: 1
     shellQuote: true
-  sbg:toolDefaultValue: Input/output options
+  sbg:toolDefaultValue: 'false'
 - id: read_group_line
   label: Read group line
   doc: SAM read group line in a format like '@RG\tID:foo\tSM:bar\tPL:PacBio'
@@ -220,7 +215,7 @@ inputs:
     prefix: -c
     position: 1
     shellQuote: true
-  sbg:category: Input/output options
+  sbg:toolDefaultValue: 'false'
 - id: ouput_cs_tag
   label: Output cs tag
   doc: |-
@@ -245,7 +240,6 @@ inputs:
     prefix: --MD
     position: 1
     shellQuote: true
-  sbg:toolDefaultValue: Input/output options
 - id: eqx
   label: Output CIGAR operators
   doc: Output =/X CIGAR operators for sequence match/mismatch.
@@ -254,7 +248,7 @@ inputs:
     prefix: --eqx
     position: 1
     shellQuote: true
-  sbg:category: Input/output options
+  sbg:toolDefaultValue: 'false'
 - id: soft_clipping
   label: Soft clipping in SAM
   doc: In SAM output, use soft clipping for supplementary alignments.
@@ -263,7 +257,7 @@ inputs:
     prefix: -Y
     position: 1
     shellQuote: true
-  sbg:category: Input/output options
+  sbg:toolDefaultValue: 'false'
 - id: minibatch_size
   label: Minibatch size
   doc: |-
