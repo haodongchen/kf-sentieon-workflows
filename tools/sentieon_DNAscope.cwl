@@ -47,7 +47,8 @@ requirements:
   - envName: SENTIEON_LICENSE
     envValue: $(inputs.sentieon_license)
 - class: InlineJavascriptRequirement
-
+$namespaces:
+  sbg: https://sevenbridges.com
 inputs:
 - id: sentieon_license
   label: Sentieon license
@@ -72,12 +73,8 @@ inputs:
   doc: Input BAM file
   type: File
   secondaryFiles:
-  - pattern: ^.bai
-    required: false
-  - pattern: ^.crai
-    required: false
   - pattern: .bai
-    required: false
+    required: true
   - pattern: .crai
     required: false
   inputBinding:

@@ -161,6 +161,14 @@ inputs:
     shellQuote: true
     position: 10
   sbg:toolDefaultValue: 'false'
+- id: output_format
+  label: Output format
+  type:
+  - type: enum
+    symbols:
+      - BAM
+      - CRAM
+  default: BAM
 - id: cpu_per_job
   label: CPU per job
   doc: CPU per job
@@ -177,6 +185,8 @@ outputs:
   secondaryFiles: 
     - pattern: .bai
       required: true
+    - pattern: .crai
+      required: false
 baseCommand:
 - sentieon
 - bwa
@@ -193,6 +203,10 @@ arguments:
   position: 100
   valueFrom: |-
     ${
-        return "| sentieon util sort -t $(nproc) -i - --sam2bam --bam_compression 1 -o " + inputs.reads_forward.nameroot + ".bam"
+        var nameext = ".bam"
+        if (inputs.output_format === "CRAM") {
+            nameext = ".cram"
+        }
+        return "| sentieon util sort -t $(nproc) -i - --sam2bam -o " + inputs.reads_forward.nameroot + nameext
     }
   shellQuote: false

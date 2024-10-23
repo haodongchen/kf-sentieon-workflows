@@ -27,7 +27,16 @@ inputs:
   - id: model_name
     label: Model name
     doc: Model platform and data type. For example, Illumina_WGS
-    type: string?
+    type: 
+    - type: enum
+      symbols:
+        - Illumina-WGS
+        - Illumina-WES
+        - MGI-WGS
+        - MGI-WES
+        - Element_Biosciences-WGS
+        - PacBio_HiFi-WGS
+        - Oxford_Nanopore-WGS
     inputBinding:
       position: 2
 outputs:
