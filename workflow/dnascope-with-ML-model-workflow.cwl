@@ -10,6 +10,8 @@ requirements:
 - class: MultipleInputFeatureRequirement
 - class: SubworkflowFeatureRequirement
 - class: InlineJavascriptRequirement
+$namespaces:
+  sbg: https://sevenbridges.com
 inputs:
   sentieon_license:
     label: Sentieon license
@@ -29,7 +31,7 @@ inputs:
     doc: |-
       Tar file containing a reference fasta and, optionally, its complete set of associated indexes (samtools, bwa, and picard)
     sbg:suggestedValue:
-      class: File
+      clas": File
       path: 5f4ffff4e4b0370371c05153
       name: Homo_sapiens_assembly38.tgz
   output_basename:
@@ -58,7 +60,6 @@ inputs:
   dnascope_model:
     doc: "DNAscope model selection"
     type:
-      - "null"
       - type: enum
         symbols:
           - Illumina-WGS
@@ -81,7 +82,7 @@ outputs:
     outputSource: generate_gvcf/output_vcf
     doc: "Genomic VCF generated from the realigned alignment file."
     secondaryFiles:
-      pattern: .tbi
+    - pattern: .tbi
       required: true
 steps:
   untar_reference:
@@ -92,10 +93,7 @@ steps:
   download_model_file:
     run: ../tools/download_DNAscope_model.cwl
     in:
-      model_name: 
-        source: dnascope_model
-        valueFrom: |
-          $(self)
+      model_name: dnascope_model
     out: [model_bundle]
   sentieon_bwa_mem:
     run: ../tools/sentieon_bwa_sort.cwl
@@ -157,5 +155,4 @@ steps:
         source: output_basename
         valueFrom: $(self).g.vcf.gz 
     out: [output_vcf]
-$namespaces:
-  sbg: https://sevenbridges.com
+

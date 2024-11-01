@@ -10,7 +10,7 @@ def main():
     parser.add_argument("model_name", help="the name of the model bundle, e.g. Illumina_WGS")
     args = parser.parse_args()
     model_name = args.model_name.split("-")
-    sentieon_models_yaml = "https://raw.githubusercontent.com/Sentieon/sentieon-models/main/sentieon_models.yaml"
+    sentieon_models_yaml = "https://raw.githubusercontent.com/Sentieon/sentieon-models/a5150f79e39ae0fd7f67b4f1b282a6e173f61462/sentieon_models.yaml"
     response = requests.get(sentieon_models_yaml, allow_redirects=True)
     content = response.content.decode("utf-8")
     content = yaml.safe_load(content)
