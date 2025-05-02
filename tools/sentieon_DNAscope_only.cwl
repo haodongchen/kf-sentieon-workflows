@@ -74,7 +74,7 @@ inputs:
   type: File
   secondaryFiles:
   - pattern: .bai
-    required: true
+    required: false
   - pattern: .crai
     required: false
   inputBinding:
@@ -112,7 +112,7 @@ inputs:
     required: false
   inputBinding:
     prefix: -d
-    position: 12
+    position: 15
     shellQuote: true
 - id: pcr_indel_model
   doc: |-
@@ -128,7 +128,7 @@ inputs:
     - conservative
   inputBinding:
     prefix: --pcr_indel_model
-    position: 12
+    position: 15
     shellQuote: true
   sbg:toolDefaultValue: conservative  
 - id: emit_mode
@@ -145,7 +145,7 @@ inputs:
     - gvcf
   inputBinding:
     prefix: --emit_mode
-    position: 12
+    position: 15
     shellQuote: true
   sbg:toolDefaultValue: variant
 - id: var_type
@@ -168,7 +168,7 @@ inputs:
   type: int?
   inputBinding:
     prefix: --call_conf
-    position: 11
+    position: 15
     shellQuote: true
   sbg:toolDefaultValue: '30'
 - id: emit_conf
@@ -177,7 +177,7 @@ inputs:
   type: int?
   inputBinding:
     prefix: --emit_conf
-    position: 11
+    position: 15
     shellQuote: true
   sbg:toolDefaultValue: '30'
 - id: genotype_model
@@ -195,13 +195,29 @@ inputs:
   default: multinomial
   inputBinding:
     prefix: --genotype_model
-    position: 11
+    position: 15
     shellQuote: true
   sbg:toolDefaultValue: multinomial
+- id: given
+  doc: |-
+    Call only the variants given in a vcf file
+  type: File?
+  secondaryFiles:
+  - pattern: .tbi
+    required: false
+  - pattern: .idx
+    required: false
+  inputBinding:
+    prefix: --given
+    position: 15
+    shellQuote: true
 - id: output_file_name
   label: Output file name
-  doc: The output VCF file name. Must end with ".vcf.gz".
-  type: string?
+  doc: The output VCF file name.
+  type: string
+  inputBinding:
+    position: 100
+    shellQuote: true
 - id: cpu_per_job
   label: CPU per job
   doc: CPU per job
@@ -229,46 +245,3 @@ arguments:
   position: 10
   valueFrom: DNAscope
   shellQuote: true
-- prefix: ''
-  position: 15
-  valueFrom:  |-
-    ${
-        if (inputs.model_bundle)
-            return "--model " + inputs.model_bundle.path+  "/dnascope.model"
-    }
-  shellQuote: false
-- prefix: '--pcr_indel_model'
-  position: 15
-  valueFrom:  |-
-    ${
-        if (inputs.is_pcr_free)
-            return "none"
-        else
-            return "conservative"
-    }
-  shellQuote: true
-- prefix: ''
-  position: 50
-  valueFrom: |-
-    ${
-        if (inputs.model_bundle)
-            return "tmp.variant.vcf.gz && sentieon driver -r " + inputs.reference.path + " --algo DNAModelApply --model " + inputs.model_bundle.path +  "/dnascope.model -v tmp.variant.vcf.gz"
-    }
-  shellQuote: false
-- prefix: ''
-  position: 100
-  valueFrom: |-
-    ${
-        if (inputs.output_file_name)
-            return inputs.output_file_name
-        else
-            if (inputs.emit_mode === "gvcf" )
-                return "variant.g.vcf.gz"
-            else
-                return "variant.vcf.gz"
-    }
-  shellQuote: false
-- prefix: ''
-  position: 150
-  valueFrom: '&& rm -f tmp.variant.vcf.gz*'
-  shellQuote: false
