@@ -48,7 +48,7 @@ requirements:
         }
     }
 - class: DockerRequirement
-  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202503
+  dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202503.01.rc1
 - class: EnvVarRequirement
   envDef:
   - envName: SENTIEON_LICENSE
