@@ -43,20 +43,20 @@ inputs:
     doc: GRCh38 reference genome FASTA with samtools and BWA indices
 
   hapl_file:
-    type: File?
-    doc: Pangenome hapl file (e.g., hprc-v2.0-mc-grch38.hapl); if not provided, will download from HPRC
+    type: File
+    doc: Pangenome hapl file (https://human-pangenomics.s3.amazonaws.com/pangenomes/freeze/release2/minigraph-cactus/hprc-v2.0-mc-grch38.hapl)
 
   gbz_file:
-    type: File?
-    doc: Pangenome GBZ file (e.g., hprc-v2.0-mc-grch38.gbz); if not provided, will download from HPRC
+    type: File
+    doc: Pangenome GBZ file (https://human-pangenomics.s3.amazonaws.com/pangenomes/freeze/release2/minigraph-cactus/hprc-v2.0-mc-grch38.gbz)
 
   model_bundle:
-    type: File?
-    doc: Platform-specific model bundle file; if not provided, will download SentieonIlluminaPangenomeRealignWGS1.0.bundle
+    type: File
+    doc: Platform-specific model bundle file
 
   pop_vcf:
-    type: File?
-    doc: Population VCF with allele frequency data; if not provided, will download from Sentieon FTP
+    type: File
+    doc: Population VCF with allele frequency data (https://ftp.sentieon.com/public/GRCh38/population/pop-v20g41-20251216.vcf.gz)
 
   output_vcf_name:
     type: string
@@ -147,29 +147,20 @@ outputs:
     doc: QC metrics directory
 
 steps:
-  download_files:
-    run: ../tools/download-pangenome-files.cwl
-    in:
-      hapl_file: hapl_file
-      gbz_file: gbz_file
-      pop_vcf: pop_vcf
-      bed_file: bed_file
-      model_bundle: model_bundle
-    out: [hapl_file_out, gbz_file_out, pop_vcf_out, bed_file_out, model_bundle_out]
 
   sentieon_pangenome:
     run: ../tools/sentieon-cli-pangenome.cwl
     in:
       reference: reference
-      hapl_file: download_files/hapl_file_out
-      gbz_file: download_files/gbz_file_out
-      model_bundle: download_files/model_bundle_out
-      pop_vcf: download_files/pop_vcf_out
+      hapl_file: hapl_file
+      gbz_file: gbz_file
+      model_bundle: model_bundle
+      pop_vcf: pop_vcf
       r1_fastq: r1_fastq
       r2_fastq: r2_fastq
       readgroup: readgroup
       sample_input: sample_input
-      bed_file: download_files/bed_file_out
+      bed_file: bed_file
       dbsnp: dbsnp
       pcr_free: pcr_free
       bam_format: bam_format
