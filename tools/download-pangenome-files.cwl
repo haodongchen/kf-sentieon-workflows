@@ -10,7 +10,7 @@ requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: 'curlimages/curl:latest'
+    dockerPull: 'python:3.7-slim'
   - class: InitialWorkDirRequirement
     listing:
       - $(inputs.hapl_file)
@@ -18,54 +18,26 @@ requirements:
       - $(inputs.pop_vcf)
       - $(inputs.bed_file)
       - $(inputs.model_bundle)
+      - entryname: download_pangenome_files.py
+        entry:
+          $include: ../scripts/download_pangenome_files.py
   - class: ResourceRequirement
     ramMin: 8000
     coresMin: 2
 
-baseCommand: [bash, -c]
+baseCommand: [python3, download_pangenome_files.py]
 arguments:
   - valueFrom: |
-      set -eo pipefail
-
-      # Download hapl file if not provided
-      if [ ! -f "$(inputs.hapl_file ? inputs.hapl_file.basename : 'none')" ]; then
-        echo "Downloading hapl file..."
-        curl -L -o hprc-v2.0-mc-grch38.hapl https://human-pangenomics.s3.amazonaws.com/pangenomes/freeze/release2/minigraph-cactus/hprc-v2.0-mc-grch38.hapl
-      else
-        echo "Using provided hapl file"
-      fi
-
-      # Download gbz file if not provided
-      if [ ! -f "$(inputs.gbz_file ? inputs.gbz_file.basename : 'none')" ]; then
-        echo "Downloading gbz file..."
-        curl -L -o hprc-v2.0-mc-grch38.gbz https://human-pangenomics.s3.amazonaws.com/pangenomes/freeze/release2/minigraph-cactus/hprc-v2.0-mc-grch38.gbz
-      else
-        echo "Using provided gbz file"
-      fi
-
-      # Download pop_vcf if not provided
-      if [ ! -f "$(inputs.pop_vcf ? inputs.pop_vcf.basename : 'none')" ]; then
-        echo "Downloading population VCF..."
-        curl -L -o pop-v20g41-20251216.vcf.gz https://ftp.sentieon.com/public/GRCh38/population/pop-v20g41-20251216.vcf.gz
-      else
-        echo "Using provided population VCF"
-      fi
-
-      # Download bed file if not provided
-      if [ ! -f "$(inputs.bed_file ? inputs.bed_file.basename : 'none')" ]; then
-        echo "Downloading BED file..."
-        curl -L -o hg38_canonical.bed https://ftp.sentieon.com/public/GRCh38/hg38_canonical.bed
-      else
-        echo "Using provided BED file"
-      fi
-
-      # Download model bundle if not provided
-      if [ ! -f "$(inputs.model_bundle ? inputs.model_bundle.basename : 'none')" ]; then
-        echo "Downloading model bundle..."
-        curl -L -o SentieonIlluminaPangenomeRealignWGS1.0.bundle https://s3.amazonaws.com/sentieon-release/other/SentieonIlluminaPangenomeRealignWGS1.0.bundle
-      else
-        echo "Using provided model bundle"
-      fi
+      ${
+        var provided = [];
+        if (inputs.hapl_file) provided.push('hapl_file');
+        if (inputs.gbz_file) provided.push('gbz_file');
+        if (inputs.pop_vcf) provided.push('pop_vcf');
+        if (inputs.bed_file) provided.push('bed_file');
+        if (inputs.model_bundle) provided.push('model_bundle');
+        return provided.join(' ');
+      }
+    shellQuote: false
 
 inputs:
   hapl_file:
