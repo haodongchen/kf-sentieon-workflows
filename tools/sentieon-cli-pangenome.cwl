@@ -7,8 +7,8 @@ requirements:
   - class: DockerRequirement
     dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202503.02
   - class: ResourceRequirement
-    coresMin: $(inputs.cpu ? inputs.cpu : 64)
-    ramMin: $(inputs.ram ? inputs.ram*1000 : 110000)
+    coresMin: $(inputs.cpu)
+    ramMin: $(inputs.ram*1000)
   - class: EnvVarRequirement
     envDef:
     - envName: SENTIEON_LICENSE
@@ -156,7 +156,7 @@ inputs:
     type: 'int?'
     default: 110
     doc: "GB size of RAM to allocate to this task."
-	
+
 arguments: []
 
 outputs:
