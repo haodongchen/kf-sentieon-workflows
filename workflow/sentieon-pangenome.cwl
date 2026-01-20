@@ -56,6 +56,8 @@ inputs:
 
   pop_vcf:
     type: File
+    secondaryFiles:
+      - .tbi
     doc: Population VCF with allele frequency data (https://ftp.sentieon.com/public/GRCh38/population/pop-v20g41-20251216.vcf.gz)
 
   output_vcf_name:
@@ -115,16 +117,6 @@ inputs:
     type: string
     doc: License server host and port
 
-  cpu:
-    type: int?
-    default: 64
-    doc: Number of CPUs to allocate to this task
-
-  ram:
-    type: int?
-    default: 110
-    doc: GB size of RAM to allocate to this task
-
 outputs:
   output_vcf:
     type: File
@@ -168,6 +160,7 @@ steps:
       skip_multiqc: skip_multiqc
       output_vcf_name: output_vcf_name
       sentieon_license: sentieon_license
-      cpu: cpu
-      ram: ram
     out: [output_vcf, bwa_cram, mm2_cram, metrics_dir]
+
+$namespaces:
+  sbg: https://sevenbridges.com

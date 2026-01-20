@@ -6,13 +6,13 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: pgc-images.sbgenomics.com/hdchen/sentieon:202503.02
-  - class: ResourceRequirement
-    coresMin: $(inputs.cpu)
-    ramMin: $(inputs.ram*1000)
   - class: EnvVarRequirement
     envDef:
     - envName: SENTIEON_LICENSE
       envValue: $(inputs.sentieon_license)
+hints:
+  - class: sbg:AWSInstanceType
+    value: c5.18xlarge
 baseCommand: ["sentieon-cli", "sentieon-pangenome"]
 
 inputs:
@@ -146,16 +146,6 @@ inputs:
   sentieon_license:
     type: string
     doc: License server host and port
-
-  cpu:
-    type: 'int?'
-    default: 64
-    doc: "Number of CPUs to allocate to this task."
-
-  ram:
-    type: 'int?'
-    default: 110
-    doc: "GB size of RAM to allocate to this task."
 
 arguments: []
 
