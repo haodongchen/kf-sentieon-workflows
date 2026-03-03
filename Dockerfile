@@ -126,7 +126,7 @@ ENV PATH /opt/sentieon-cli-venv/bin:$PATH
 RUN pip install multiqc
 
 # Install the sentieon-cli
-RUN curl -LO https://github.com/Sentieon/sentieon-cli/releases/download/v1.5.0/sentieon_cli-1.5.2.tar.gz && \
+RUN curl -LO https://github.com/Sentieon/sentieon-cli/releases/download/v1.5.2/sentieon_cli-1.5.2.tar.gz && \
     pip install sentieon_cli-1.5.2.tar.gz && \
     rm sentieon_cli-1.5.2.tar.gz
 
